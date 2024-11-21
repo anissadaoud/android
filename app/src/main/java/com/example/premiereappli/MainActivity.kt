@@ -26,6 +26,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable class Profildestination
 @Serializable class Filmsdestination
+@Serializable class Seriesdestination
+@Serializable class Acteursdestination
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,13 +40,19 @@ class MainActivity : ComponentActivity() {
 
             PremiereAppliTheme {
                 val navController = rememberNavController()
-                Scaffold {
+                Scaffold(bottomBar = { Navbar(navController) }) {
                     NavHost(navController = navController, startDestination = Profildestination()) {
                         composable<Profildestination> {
                             Profil(windowSizeClass) { navController.navigate(Filmsdestination()) }
                         }
                         composable<Filmsdestination> {
-                            Films(navController, viewModel ) { navController.navigate(Profildestination()) }
+                            Films(navController, viewModel ) { navController.navigate(Filmsdestination()) }
+                        }
+                        composable<Seriesdestination> {
+                            Series(navController, viewModel ) { navController.navigate(Seriesdestination()) }
+                        }
+                        composable<Acteursdestination> {
+                            Acteurs(navController, viewModel ) { navController.navigate(Acteursdestination()) }
                         }
                     }
                 }
@@ -62,22 +70,19 @@ fun Navbar(navController: NavHostController) {
             icon = { Icon(Icons.Default.Home, contentDescription = "Films") },
             label = { Text("Films") },
             selected = navController.currentDestination?.route == "films",
-            onClick = { navController.navigate("films") }
+            onClick = { navController.navigate(Filmsdestination()) }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.DateRange, contentDescription = "Series") },
             label = { Text("Series") },
             selected = navController.currentDestination?.route == "series",
-            onClick = { navController.navigate("series") }
+            onClick = { navController.navigate(Seriesdestination()) }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Default.Person, contentDescription = "Acteurs") },
             label = { Text("Acteurs") },
             selected = navController.currentDestination?.route == "acteurs",
-            onClick = { navController.navigate("acteurs") }
+            onClick = { navController.navigate(Acteursdestination()) }
         )
     }
 }
-
-
-

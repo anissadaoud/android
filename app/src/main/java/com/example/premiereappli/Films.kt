@@ -1,4 +1,5 @@
 package com.example.premiereappli
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -13,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.foundation.lazy.items
 
 @Composable
-fun Films(navController: NavHostController, onClick: () -> Unit, viewModel : MainViewModel) {
+fun Films(navController: NavHostController, viewModel : MainViewModel, onClick: () -> Unit) {
     val movies by viewModel.movies.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -21,23 +22,18 @@ fun Films(navController: NavHostController, onClick: () -> Unit, viewModel : Mai
     }
 
     LazyColumn{
-        items(movies){
-            movie -> Text(text = movie.original_title)
+        items(movies.size){ index ->
+            Text(movies[index].original_title)
         }
     }
 
-
-    Scaffold(
-        bottomBar = { Navbar(navController) }
-    ) { innerPadding ->
-        Column(
+    Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Second écran")
             Button(onClick = onClick) {
                 Text("Ecran précédent")
             }
         }
-    }
+
 }
 

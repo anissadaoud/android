@@ -8,11 +8,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainViewModel : ViewModel() {
-
-    val movies = MutableStateFlow<List<Movie>>(listOf())
-
+    // StateFlow pour les films
+    val movies = MutableStateFlow<List<TmdbMovie>>(listOf())
+    // Clé API
     val apikey = "a6f34ffd317094fe364b44e6dbd6d5bc"
-
+    // Service Retrofit
     val service = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create())
@@ -21,8 +21,13 @@ class MainViewModel : ViewModel() {
 
     fun searchMovies(motcle: String){
         viewModelScope.launch{
-            movies.value = service.getFilmsParMotCle (apikey, motcle).results
+            movies.value = service.searchMovies(apikey, motcle).results
+        }
+    }
 
+    fun getPopularMovies() {
+        viewModelScope.launch {
+            movies.value = service.getPopularMovies(apikey).results
         }
     }
 
