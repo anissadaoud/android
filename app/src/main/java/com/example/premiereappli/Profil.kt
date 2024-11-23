@@ -138,7 +138,7 @@ fun StartButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF1348A4)
+            containerColor = Color(0xFFEEB8D4)
         )
     ) {
         Text("Démarrer")

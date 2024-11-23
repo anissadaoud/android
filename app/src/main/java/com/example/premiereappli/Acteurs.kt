@@ -14,3 +14,5 @@ fun Acteurs(navController: NavHostController, viewModel : MainViewModel, onClick
     val movies by viewModel.movies.collectAsState()
 
 }
+
+

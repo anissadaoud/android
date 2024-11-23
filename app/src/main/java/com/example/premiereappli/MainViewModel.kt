@@ -2,6 +2,7 @@ package com.example.premiereappli
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -29,6 +30,13 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             movies.value = service.getPopularMovies(apikey).results
         }
+    }
+    fun getMovieDetail(id: Int): Flow<TmdbMovie?> {
+        val movieDetail = MutableStateFlow<TmdbMovie?>(null)
+        viewModelScope.launch {
+            movieDetail.value = service.getMovieDetail(apikey, id.toString())
+        }
+        return movieDetail
     }
 
 }

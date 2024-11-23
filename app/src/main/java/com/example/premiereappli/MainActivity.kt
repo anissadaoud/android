@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -64,8 +65,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Navbar(navController: NavHostController) {
-    NavigationBar {
+    //Vérifier la route actuelle du NavController
+    //val currentRoute = navController.currentDestination?.route
+    // Vérifier si l'écran actuel est le profil, si oui, ne pas afficher la navbar
+    //if (currentRoute != "Profil") {
 
+    NavigationBar(
+        containerColor = Color(0xFFEEB8D4) // Couleur de fond rose
+    ) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Films") },
             label = { Text("Films") },
@@ -86,3 +93,4 @@ fun Navbar(navController: NavHostController) {
         )
     }
 }
+
