@@ -1,21 +1,28 @@
 package com.example.premiereappli
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.room.util.copy
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -68,9 +75,14 @@ fun MovieGridItem(movie: TmdbMovie, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .background(Color.White, shape = RoundedCornerShape(8.dp))
+            .border(1.dp, Color(0xFFEEB8D4), RoundedCornerShape(8.dp))
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
         // Affiche l'image de l'affiche du film
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -81,17 +93,25 @@ fun MovieGridItem(movie: TmdbMovie, onClick: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(2 / 3f) // Format standard pour les affiches
+                .clip(RoundedCornerShape(8.dp))
         )
         Spacer(modifier = Modifier.height(8.dp))
         // Affiche le titre
         Text(
             text = movie.original_title,
-            style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
             maxLines = 2,
+            textAlign = TextAlign.Center
+        )
+        // Affiche la date de sortie sous le titre
+        Text(
+            text = "Sortie: ${movie.release_date}",
+            style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center
         )
     }
 }
+
 
 // Composable pour la barre de navigation inférieure
 @Composable

@@ -68,7 +68,7 @@ fun Navbar(navController: NavHostController) {
     //Vérifier la route actuelle du NavController
     //val currentRoute = navController.currentDestination?.route
     // Vérifier si l'écran actuel est le profil, si oui, ne pas afficher la navbar
-    //if (currentRoute != "Profil") {
+    //if (currentRoute != Profildestination()) {
 
     NavigationBar(
         containerColor = Color(0xFFEEB8D4) // Couleur de fond rose

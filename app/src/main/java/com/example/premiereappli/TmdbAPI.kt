@@ -12,17 +12,21 @@ interface TmdbAPI {
     suspend fun searchMovies(@Query("api_key") apiKey: String, @Query("query") query: String): Tmdbresult
 
     @GET("tv/popular")
-    suspend fun getPopularSeries(@Query("api_key") apiKey: String): Tmdbresult
+    suspend fun getPopularSeries(@Query("api_key") apiKey: String): SeriesResponse
 
     @GET("search/tv")
-    suspend fun searchSeries(@Query("api_key") apiKey: String, @Query("query") query: String): Tmdbresult
+    suspend fun searchSeries(@Query("api_key") apiKey: String, @Query("query") query: String): SeriesResponse
 
     @GET("search/person")
-    suspend fun searchPersons(@Query("api_key") apiKey: String, @Query("query") query: String): Tmdbresult
+    suspend fun searchPersons(@Query("api_key") apiKey: String, @Query("query") query: String): ActorResponse
+
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
         @Path("movie_id") movieId: String,
         @Query("api_key") apiKey: String
     ): TmdbMovie
+
+    @GET("person/popular")
+    suspend fun getPopularActors(@Query("api_key") apiKey: String): ActorResponse
 }

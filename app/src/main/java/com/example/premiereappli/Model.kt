@@ -3,7 +3,15 @@ data class Tmdbresult(
     val page: Int,
     val results: List<TmdbMovie>,
     val total_pages: Int,
-    val total_results: Int
+    val total_results: Int,
+)
+
+data class ActorResponse(
+    val results: List<TmdbPerson>
+)
+
+data class SeriesResponse(
+    val results: List<TmdbSeries>
 )
 
 data class TmdbMovie(
