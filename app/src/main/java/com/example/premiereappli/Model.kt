@@ -14,6 +14,10 @@ data class SeriesResponse(
     val results: List<TmdbSeries>
 )
 
+data class MovieResponse(
+    val results: List<TmdbMovieDetails>
+)
+
 data class TmdbMovie(
     val adult: Boolean,
     val backdrop_path: String,
@@ -77,6 +81,7 @@ data class TmdbMovieDetails(
     val vote_count: Int
 )
 
+
 data class Genre(
     val id: Int,
     val name: String
@@ -95,5 +100,7 @@ data class Crew(
     val job: String,
     val profile_path: String
 )
+
+
 
 

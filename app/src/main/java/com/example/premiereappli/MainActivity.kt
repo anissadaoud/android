@@ -29,6 +29,7 @@ import kotlinx.serialization.Serializable
 @Serializable class Filmsdestination
 @Serializable class Seriesdestination
 @Serializable class Acteursdestination
+@Serializable class MovieDetaildestination
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,6 +55,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<Acteursdestination> {
                             Acteurs(navController, viewModel ) { navController.navigate(Acteursdestination()) }
+                        }
+                        composable("movieDetail/{movieId}") { backStackEntry ->
+                            val movieId = backStackEntry.arguments?.getString("movieId")?.toInt() ?: 0
+                            MovieDetailScreen(movieId = movieId, navController = navController, viewModel = viewModel)
                         }
                     }
                 }

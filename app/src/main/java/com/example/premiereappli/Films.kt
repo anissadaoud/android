@@ -9,9 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,13 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.room.util.copy
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Films(navController: NavHostController, viewModel: MainViewModel, function: () -> Unit) {
+fun Films(navController: NavHostController, viewModel: MainViewModel,function: () -> Unit) {
     // État des films observé depuis le ViewModel
     val movies by viewModel.movies.collectAsState()
 
@@ -61,7 +58,7 @@ fun Films(navController: NavHostController, viewModel: MainViewModel, function: 
                 items(movies) { movie ->
                     MovieGridItem(movie) {
                         // Naviguer vers l'écran des détails d'un film
-                        navController.navigate("movie/${movie.id}")
+                        navController.navigate("movieDetail/${movie.id}")
                     }
                 }
             }
@@ -81,8 +78,6 @@ fun MovieGridItem(movie: TmdbMovie, onClick: () -> Unit) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
         // Affiche l'image de l'affiche du film
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -112,7 +107,6 @@ fun MovieGridItem(movie: TmdbMovie, onClick: () -> Unit) {
     }
 }
 
-
 // Composable pour la barre de navigation inférieure
 @Composable
 fun FilmsBottomBar(navController: NavHostController) {
@@ -140,10 +134,10 @@ fun FilmsTopBar(viewModel: MainViewModel) {
     ) {
         Text(
             text = "Rechercher un film",
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.width(16.dp))
-        androidx.compose.material3.OutlinedTextField(
+        OutlinedTextField(
             value = searchQuery,
             onValueChange = {
                 searchQuery = it
@@ -154,3 +148,4 @@ fun FilmsTopBar(viewModel: MainViewModel) {
         )
     }
 }
+

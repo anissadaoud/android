@@ -9,10 +9,12 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainViewModel : ViewModel() {
 
-    // StateFlow pour les acteurs et les films
+    // StateFlow
     val actors: MutableStateFlow<List<TmdbPerson>> = MutableStateFlow(listOf())
     val movies: MutableStateFlow<List<TmdbMovie>> = MutableStateFlow(listOf())
     val series: MutableStateFlow<List<TmdbSeries>> = MutableStateFlow(listOf())
+    val movieDetail = MutableStateFlow<TmdbMovieDetails?>(null)
+    val actorDetail = MutableStateFlow<TmdbPerson?>(null)
     // Clé API pour TMDb
     private val apikey = "a6f34ffd317094fe364b44e6dbd6d5bc"
 
@@ -65,6 +67,28 @@ class MainViewModel : ViewModel() {
     fun searchSeries(motcle: String) {
         viewModelScope.launch {
             series.value = service.searchSeries(apikey, motcle).results
+        }
+    }
+
+
+    // Fonction pour récupérer les détails d'un film
+    fun getMovieDetail(movieId: Int) {
+        viewModelScope.launch {
+            val response = service.getMovieDetail(movieId.toString(), apikey)
+            movieDetail.value = response // Ensure that the cast is included in the response
+        }
+    }
+
+    fun getActorDetail(actorId: Int) {
+        viewModelScope.launch {
+            try {
+                // Fetch actor details by ID
+                val response = service.getActorDetail(actorId.toString(), apikey)
+                actorDetail.value = response // Update actor details in state
+            } catch (e: Exception) {
+                // Handle error (e.g., network issues)
+                actorDetail.value = null
+            }
         }
     }
 }
