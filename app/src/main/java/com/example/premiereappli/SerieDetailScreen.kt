@@ -1,6 +1,5 @@
 package com.example.premiereappli
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,23 +24,24 @@ import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieDetailScreen(movieId: Int, navController: NavHostController, viewModel: MainViewModel) {
-    // Collect the movie details state from the ViewModel
-    val movieDetail by viewModel.movieDetail.collectAsState()
-    val cast by viewModel.movieCast.collectAsState()
+fun SerieDetailScreen(seriesId: Int, navController: NavHostController, viewModel: MainViewModel) {
+    // Collect the series details
+    val seriesDetail by viewModel.seriesDetail.collectAsState()
+    val cast by viewModel.seriesCast.collectAsState()
 
-    // Fetch the movie details when the screen is shown
-    LaunchedEffect(movieId) {
-        viewModel.getMovieDetail(movieId) // Load movie details
-        viewModel.getFilmCast(movieId)
+
+    // Fetch the series details
+    LaunchedEffect(seriesId) {
+        viewModel.getSeriesDetail(seriesId) // series details
+        viewModel.getFilmCast(seriesId) // the cast for the series
     }
 
-    // Check if the movieDetail is not null
-    movieDetail?.let { movie ->
+    // Check if the seriesDetail is not null
+    seriesDetail?.let { series ->
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Détails du film") },
+                    title = { Text("Détails de la série") },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Retour")
@@ -56,13 +56,13 @@ fun MovieDetailScreen(movieId: Int, navController: NavHostController, viewModel:
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-                // Display the movie poster
+                // Display the series poster
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data("https://image.tmdb.org/t/p/w500${movie.poster_path}")
+                        .data("https://image.tmdb.org/t/p/w500${series.poster_path}")
                         .crossfade(true)
                         .build(),
-                    contentDescription = "Movie Poster",
+                    contentDescription = "Series Poster",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
@@ -71,9 +71,9 @@ fun MovieDetailScreen(movieId: Int, navController: NavHostController, viewModel:
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Display the movie title
+                // Display the series title
                 Text(
-                    text = movie.title,
+                    text = series.name,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center
                 )
@@ -82,23 +82,23 @@ fun MovieDetailScreen(movieId: Int, navController: NavHostController, viewModel:
 
                 // Display the release date
                 Text(
-                    text = "Release: ${movie.release_date}",
+                    text = "Release: ${series.first_air_date}",
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Display the movie genres
+                // Display the series genres
                 Text(
-                    text = "Genre: ${movie.genres.joinToString(", ") { it.name }}",
+                    text = "Genre: ${series.genres.joinToString(", ") { it.name }}",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Display the movie synopsis
+                // Display the series synopsis
                 Text(
                     text = "Synopsis",
                     style = MaterialTheme.typography.titleMedium,
@@ -108,38 +108,40 @@ fun MovieDetailScreen(movieId: Int, navController: NavHostController, viewModel:
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = movie.overview,
+                    text = series.overview,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = "Actors",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
+                // Display the cast section
+                Text(
+                    text = "Actors",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                    LazyRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(cast) { actor ->
-                            ActorItem(actor= actor)
-                        }
+                // Actor carousel
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(cast) { actor ->
+                        Actor(actor = actor)
                     }
+                }
             }
         }
     } ?: run {
-        // Show a loading or error message if movieDetail is null
-        Text(text = "Loading movie details...", modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center)
+        // Show a loading or error message if seriesDetail is null
+        Text(text = "Loading series details...", modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center)
     }
 }
 
 @Composable
-fun ActorItem(actor: Cast) {
+fun Actor(actor: Cast) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(120.dp)
@@ -149,11 +151,11 @@ fun ActorItem(actor: Cast) {
                 .data("https://image.tmdb.org/t/p/w500${actor.profile_path}")
                 .crossfade(true)
                 .build(),
-            contentDescription = "Actors",
+            contentDescription = "Actor",
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
-                .background(Color(0xFFEEB8D4))
+                .background(Color(0xFFEEB8D4)) // Pink background
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -165,7 +167,7 @@ fun ActorItem(actor: Cast) {
             maxLines = 1
         )
 
-    Text(
+        Text(
             text = actor.character,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
@@ -173,5 +175,3 @@ fun ActorItem(actor: Cast) {
         )
     }
 }
-
-

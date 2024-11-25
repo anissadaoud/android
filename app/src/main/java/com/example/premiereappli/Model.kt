@@ -14,8 +14,16 @@ data class SeriesResponse(
     val results: List<TmdbSeries>
 )
 
+data class SeriesDetail(
+    val results: List<TmdbSeriesDetails>
+)
 data class MovieResponse(
     val results: List<TmdbMovieDetails>
+)
+
+data class CastResponse(
+    val cast: List<Cast>,
+    val id: Int
 )
 
 data class TmdbMovie(
@@ -74,12 +82,26 @@ data class TmdbMovieDetails(
     val runtime: Int?,
     val genres: List<Genre>,
     val cast: List<Cast>,
-    val crew: List<Crew>,
     val poster_path: String,
     val backdrop_path: String,
     val vote_average: Double,
     val vote_count: Int
 )
+
+data class TmdbSeriesDetails(
+    val id: Int,
+    val name: String,
+    val overview: String,
+    val first_air_date: String,
+    val runtime: Int?,
+    val genres: List<Genre>,
+    val cast: List<Cast>,
+    val poster_path: String,
+    val backdrop_path: String,
+    val vote_average: Double,
+    val vote_count: Int
+)
+
 
 
 data class Genre(
@@ -94,12 +116,6 @@ data class Cast(
     val profile_path: String
 )
 
-data class Crew(
-    val id: Int,
-    val name: String,
-    val job: String,
-    val profile_path: String
-)
 
 
 

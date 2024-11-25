@@ -14,12 +14,14 @@ class MainViewModel : ViewModel() {
     val movies: MutableStateFlow<List<TmdbMovie>> = MutableStateFlow(listOf())
     val series: MutableStateFlow<List<TmdbSeries>> = MutableStateFlow(listOf())
     val movieDetail = MutableStateFlow<TmdbMovieDetails?>(null)
-    val actorDetail = MutableStateFlow<TmdbPerson?>(null)
+    val movieCast : MutableStateFlow<List<Cast>> = MutableStateFlow(listOf())
+    val seriesDetail = MutableStateFlow<TmdbSeriesDetails?>(null)
+    val seriesCast : MutableStateFlow<List<Cast>> = MutableStateFlow(listOf())
     // Clé API pour TMDb
     private val apikey = "a6f34ffd317094fe364b44e6dbd6d5bc"
 
     // Création du service Retrofit pour l'API
-    private val service: TmdbAPI = Retrofit.Builder()
+    val service: TmdbAPI = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
@@ -75,20 +77,38 @@ class MainViewModel : ViewModel() {
     fun getMovieDetail(movieId: Int) {
         viewModelScope.launch {
             val response = service.getMovieDetail(movieId.toString(), apikey)
-            movieDetail.value = response // Ensure that the cast is included in the response
+            movieDetail.value = response
         }
     }
 
-    fun getActorDetail(actorId: Int) {
+    // Fonction pour récupérer les détails d'une série
+    fun getSeriesDetail(seriesId: Int) {
+        viewModelScope.launch {
+            val response = service.getSeriesDetail(seriesId.toString(), apikey)
+            seriesDetail.value = response
+        }
+    }
+
+    fun getFilmCast(MovieId: Int) {
         viewModelScope.launch {
             try {
-                // Fetch actor details by ID
-                val response = service.getActorDetail(actorId.toString(), apikey)
-                actorDetail.value = response // Update actor details in state
+                val response = service.getMovieCast(MovieId,apikey).cast
+                movieCast.value = response
             } catch (e: Exception) {
-                // Handle error (e.g., network issues)
-                actorDetail.value = null
+                movieCast.value
             }
         }
     }
+
+    fun getSerieCast(seriesId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = service.getSeriesCast(seriesId,apikey).cast
+                seriesCast.value = response
+            } catch (e: Exception) {
+                seriesCast.value
+            }
+        }
+    }
+
 }

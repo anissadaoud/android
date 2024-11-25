@@ -22,17 +22,18 @@ interface TmdbAPI {
 
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetail(
-        @Path("movie_id") movieId: String,
-        @Query("api_key") apiKey: String
-    ): TmdbMovieDetails
+    suspend fun getMovieDetail(@Path("movie_id") movieId: String, @Query("api_key") apiKey: String): TmdbMovieDetails
+
+    @GET("tv/{tv_id}")
+    suspend fun getSeriesDetail(@Path("tv_id") tvId: String, @Query("api_key") apiKey: String): TmdbSeriesDetails
 
     @GET("person/popular")
     suspend fun getPopularActors(@Query("api_key") apiKey: String): ActorResponse
 
-    @GET("person/{person_id}")
-    suspend fun getActorDetail(
-        @Path("person_id") personId: String,
-        @Query("api_key") apiKey: String
-    ): TmdbPerson
+
+    @GET("movie/{id}/credits")
+    suspend fun getMovieCast(@Path("id") id: Int, @Query("api_key") api_key: String, ): CastResponse
+
+    @GET("tv/{id}/credits")
+    suspend fun getSeriesCast(@Path("id") id: Int, @Query("api_key") api_key: String): CastResponse
 }

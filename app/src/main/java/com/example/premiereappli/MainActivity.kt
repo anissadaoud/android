@@ -17,13 +17,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.premiereappli.ui.theme.PremiereAppliTheme
 import kotlinx.serialization.Serializable
+import androidx.navigation.NavDestination.Companion.hasRoute
 
 @Serializable class Profildestination
 @Serializable class Filmsdestination
@@ -60,6 +63,10 @@ class MainActivity : ComponentActivity() {
                             val movieId = backStackEntry.arguments?.getString("movieId")?.toInt() ?: 0
                             MovieDetailScreen(movieId = movieId, navController = navController, viewModel = viewModel)
                         }
+                        composable("serieDetail/{seriesId}") { backStackEntry ->
+                            val seriesId = backStackEntry.arguments?.getString("seriesId")?.toInt() ?: 0
+                            SerieDetailScreen(seriesId = seriesId, navController = navController, viewModel = viewModel)
+                        }
                     }
                 }
             }
@@ -70,32 +77,34 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Navbar(navController: NavHostController) {
-    //Vérifier la route actuelle du NavController
-    //val currentRoute = navController.currentDestination?.route
-    // Vérifier si l'écran actuel est le profil, si oui, ne pas afficher la navbar
-    //if (currentRoute != Profildestination()) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination
 
-    NavigationBar(
-        containerColor = Color(0xFFEEB8D4) // Couleur de fond rose
-    ) {
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Films") },
-            label = { Text("Films") },
-            selected = navController.currentDestination?.route == "films",
-            onClick = { navController.navigate(Filmsdestination()) }
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.DateRange, contentDescription = "Series") },
-            label = { Text("Series") },
-            selected = navController.currentDestination?.route == "series",
-            onClick = { navController.navigate(Seriesdestination()) }
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, contentDescription = "Acteurs") },
-            label = { Text("Acteurs") },
-            selected = navController.currentDestination?.route == "acteurs",
-            onClick = { navController.navigate(Acteursdestination()) }
-        )
+
+    if (currentRoute?.hasRoute<Profildestination>() == false) {
+
+        NavigationBar(
+            containerColor = Color(0xFFEEB8D4) // Couleur de fond rose
+        ) {
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.Home, contentDescription = "Films") },
+                label = { Text("Films") },
+                selected = navController.currentDestination?.route == "films",
+                onClick = { navController.navigate(Filmsdestination()) }
+            )
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.DateRange, contentDescription = "Series") },
+                label = { Text("Series") },
+                selected = navController.currentDestination?.route == "series",
+                onClick = { navController.navigate(Seriesdestination()) }
+            )
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.Person, contentDescription = "Acteurs") },
+                label = { Text("Acteurs") },
+                selected = navController.currentDestination?.route == "acteurs",
+                onClick = { navController.navigate(Acteursdestination()) }
+            )
+        }
     }
 }
 
