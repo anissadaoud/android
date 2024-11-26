@@ -1,6 +1,5 @@
 package com.example.premiereappli
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,12 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 
-
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Series(navController: NavHostController, viewModel: MainViewModel,function: () -> Unit) {
     // État des séries observé depuis le ViewModel
@@ -62,7 +56,8 @@ fun Series(navController: NavHostController, viewModel: MainViewModel,function: 
                 items(series) { serie ->
                     SeriesGridItem(serie) {
                         // Naviguer vers l'écran des détails d'une série
-                        navController.navigate("serie/${serie.id}")
+                        navController.navigate("seriesDetail/${serie.id}")
+
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package com.example.premiereappli
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +22,6 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Films(navController: NavHostController, viewModel: MainViewModel,function: () -> Unit) {
     // État des films observé depuis le ViewModel

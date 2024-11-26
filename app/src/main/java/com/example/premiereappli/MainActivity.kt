@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                             val movieId = backStackEntry.arguments?.getString("movieId")?.toInt() ?: 0
                             MovieDetailScreen(movieId = movieId, navController = navController, viewModel = viewModel)
                         }
-                        composable("serieDetail/{seriesId}") { backStackEntry ->
+                        composable("seriesDetail/{seriesId}") { backStackEntry ->
                             val seriesId = backStackEntry.arguments?.getString("seriesId")?.toInt() ?: 0
                             SerieDetailScreen(seriesId = seriesId, navController = navController, viewModel = viewModel)
                         }
@@ -79,7 +79,6 @@ class MainActivity : ComponentActivity() {
 fun Navbar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination
-
 
     if (currentRoute?.hasRoute<Profildestination>() == false) {
 

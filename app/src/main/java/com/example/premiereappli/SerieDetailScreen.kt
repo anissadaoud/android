@@ -33,7 +33,7 @@ fun SerieDetailScreen(seriesId: Int, navController: NavHostController, viewModel
     // Fetch the series details
     LaunchedEffect(seriesId) {
         viewModel.getSeriesDetail(seriesId) // series details
-        viewModel.getFilmCast(seriesId) // the cast for the series
+        viewModel.getSerieCast(seriesId) // the cast for the series
     }
 
     // Check if the seriesDetail is not null
