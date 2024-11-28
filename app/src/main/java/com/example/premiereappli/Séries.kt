@@ -34,7 +34,7 @@ fun Series(navController: NavHostController, viewModel: MainViewModel,function: 
 
     Scaffold(
         topBar = { SeriesTopBar(viewModel) },
-        bottomBar = { FilmsBottomBar(navController) }
+        bottomBar = { SeriesBottomBar(navController) }
     ) { paddingValues ->
         if (series.isEmpty()) {
             // Affiche un texte si la liste est vide

@@ -1,5 +1,6 @@
 package com.example.premiereappli
 
+
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -33,6 +35,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 @Serializable class Seriesdestination
 @Serializable class Acteursdestination
 @Serializable class MovieDetaildestination
+@Serializable class PlaylistDestination
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,7 +51,10 @@ class MainActivity : ComponentActivity() {
                 Scaffold(bottomBar = { Navbar(navController) }) {
                     NavHost(navController = navController, startDestination = Profildestination()) {
                         composable<Profildestination> {
-                            Profil(windowSizeClass) { navController.navigate(Filmsdestination()) }
+                            Profil(windowSizeClass) { navController.navigate(PlaylistDestination()) }
+                        }
+                        composable<PlaylistDestination> {
+                            Playlist(navController, viewModel ) { navController.navigate(PlaylistDestination()) }
                         }
                         composable<Filmsdestination> {
                             Films(navController, viewModel ) { navController.navigate(Filmsdestination()) }
@@ -102,6 +108,13 @@ fun Navbar(navController: NavHostController) {
                 label = { Text("Acteurs") },
                 selected = navController.currentDestination?.route == "acteurs",
                 onClick = { navController.navigate(Acteursdestination()) }
+            )
+
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.PlayArrow, contentDescription = "Playlist") },
+                label = { Text("Playlist") },
+                selected = navController.currentDestination?.route == "playlist",
+                onClick = { navController.navigate(PlaylistDestination()) }
             )
         }
     }
