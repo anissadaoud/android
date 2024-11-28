@@ -1,5 +1,7 @@
 package com.example.premiereappli
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 data class Playlist(
     val checksum: String,
     val collaborative: Boolean,

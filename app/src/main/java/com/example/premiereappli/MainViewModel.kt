@@ -2,6 +2,9 @@ package com.example.premiereappli
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplicationtest.playlistjson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -17,6 +20,7 @@ class MainViewModel : ViewModel() {
     val movieCast : MutableStateFlow<List<Cast>> = MutableStateFlow(listOf())
     val seriesDetail = MutableStateFlow<TmdbSeriesDetails?>(null)
     val seriesCast : MutableStateFlow<List<Cast>> = MutableStateFlow(listOf())
+    var playlist : MutableStateFlow<List<Playlist>> = MutableStateFlow(listOf())
     // Clé API pour TMDb
     private val apikey = "a6f34ffd317094fe364b44e6dbd6d5bc"
 
@@ -26,6 +30,7 @@ class MainViewModel : ViewModel() {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
         .create(TmdbAPI::class.java)
+
 
     // Fonction pour récupérer les acteurs populaires
     fun getPopularActors() {
@@ -111,4 +116,18 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    // récupère la playlist
+    fun fetchPlaylist() : Playlist {
+     val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        return moshi.adapter(Playlist::class.java).fromJson(playlistjson)!!
+    }
+
+    fun getPlaylist() {
+        viewModelScope.launch {
+            playlist.value = listOf(fetchPlaylist())
+        }
+    }
+
 }
+
+

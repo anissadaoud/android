@@ -36,4 +36,6 @@ interface TmdbAPI {
 
     @GET("tv/{id}/credits")
     suspend fun getSeriesCast(@Path("id") id: Int, @Query("api_key") api_key: String): CastResponse
+
+
 }

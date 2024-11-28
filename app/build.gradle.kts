@@ -86,5 +86,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation ("io.coil-kt:coil-compose:2.4.0")
     implementation ("androidx.compose.material3:material3-window-size-class:<latest_version>")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+
 
 }
